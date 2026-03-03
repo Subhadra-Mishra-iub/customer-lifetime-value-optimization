@@ -17,9 +17,6 @@ build/
 *.swp
 *.swo
 
-# Generated outputs (run main.py and generate_poster.py to recreate)
-outputs/
-
 # OS
 .DS_Store
 Thumbs.db
