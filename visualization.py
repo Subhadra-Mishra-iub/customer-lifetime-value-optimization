@@ -27,6 +27,7 @@ def plot_roc_curves(
     results: Dict[str, Dict[str, Any]],
     save_path: Optional[Path] = None,
     figsize: tuple = (7, 5),
+    poster_mode: bool = False,
 ) -> None:
     """
     Plot ROC curves for Logistic Regression and Random Forest.
@@ -40,6 +41,8 @@ def plot_roc_curves(
     figsize : tuple
         Figure dimensions.
     """
+    if poster_mode:
+        figsize = (8, 6)
     fig, ax = plt.subplots(figsize=figsize)
 
     for key, color in [("lr", COLORS["lr"]), ("rf", COLORS["rf"])]:
@@ -56,10 +59,12 @@ def plot_roc_curves(
     ax.plot([0, 1], [0, 1], "k--", lw=1, label="Random")
     ax.set_xlim([0.0, 1.0])
     ax.set_ylim([0.0, 1.05])
-    ax.set_xlabel("False Positive Rate")
-    ax.set_ylabel("True Positive Rate")
-    ax.set_title("ROC Curves: Churn Prediction Models")
-    ax.legend(loc="lower right", fontsize=9)
+    fs_label, fs_legend = (16, 14) if poster_mode else (10, 9)  # +15% for conference viewing
+    ax.set_xlabel("False Positive Rate", fontsize=fs_label)
+    ax.set_ylabel("True Positive Rate", fontsize=fs_label)
+    ax.set_title("ROC Curves: Churn Prediction Models", fontsize=fs_label + 1)
+    ax.tick_params(axis="both", labelsize=fs_label - 1)
+    ax.legend(loc="lower right", fontsize=fs_legend)
     ax.grid(True, alpha=0.3)
     fig.tight_layout(pad=0.8)
 
@@ -71,7 +76,7 @@ def plot_roc_curves(
 
 
 def _shorten_feature_name(name: str) -> str:
-    """Shorten feature names for poster readability."""
+    """Shorten feature names for poster readability. Use consistent 'TotalCharges' (not both variants)."""
     replacements = [
         ("_", " "), ("No internet service", "No net"), ("Fiber optic", "Fiber"),
         ("Electronic check", "E-check"), ("two year", "2yr"), ("one year", "1yr"),
@@ -79,6 +84,8 @@ def _shorten_feature_name(name: str) -> str:
     s = name
     for old, new in replacements:
         s = s.replace(old, new)
+    # Normalize Total Charges / TotalCharges to single form
+    s = s.replace("Total Charges", "TotalCharges").replace("Total charges", "TotalCharges")
     return s[:25] if len(s) > 25 else s
 
 
@@ -112,14 +119,15 @@ def plot_feature_importance(
 
     if poster_mode:
         plot_df["feature"] = plot_df["feature"].apply(_shorten_feature_name)
-        figsize = (7, 5.5)
+        figsize = (8, 6)
 
     fig, ax = plt.subplots(figsize=figsize)
     bar_height = 0.5 if poster_mode else 0.6
     bars = ax.barh(plot_df["feature"], plot_df["importance"], height=bar_height, color=COLORS["rf"], alpha=0.88)
-    ax.set_xlabel("Importance", fontsize=13 if poster_mode else 10)
-    ax.set_title(title, fontsize=13 if poster_mode else 10)
-    ax.tick_params(axis="both", labelsize=11 if poster_mode else 9)
+    fs = 16 if poster_mode else 10  # +15% for conference viewing
+    ax.set_xlabel("Importance", fontsize=fs)
+    ax.set_title(title, fontsize=fs + 1)
+    ax.tick_params(axis="both", labelsize=fs - 1)
     ax.set_xlim(0, plot_df["importance"].max() * 1.15)
     ax.grid(True, axis="x", alpha=0.3)
     fig.tight_layout(pad=0.6)
@@ -135,6 +143,7 @@ def plot_revenue_vs_budget(
     sweep_df: pd.DataFrame,
     save_path: Optional[Path] = None,
     figsize: tuple = (8, 5),
+    poster_mode: bool = False,
 ) -> None:
     """
     Plot Revenue Saved vs Budget for targeted vs random strategies.
@@ -146,6 +155,8 @@ def plot_revenue_vs_budget(
     save_path : Path, optional
     figsize : tuple
     """
+    if poster_mode:
+        figsize = (9, 6)
     fig, ax = plt.subplots(figsize=figsize)
 
     ax.plot(
@@ -167,10 +178,12 @@ def plot_revenue_vs_budget(
         label="Random",
     )
 
-    ax.set_xlabel("Marketing Budget (thousands)")
-    ax.set_ylabel("Revenue Saved (thousands)")
-    ax.set_title("Revenue Saved vs. Retention Budget: Targeted vs. Random Strategy")
-    ax.legend(loc="lower right", fontsize=9)
+    fs = 16 if poster_mode else 10  # +15% for conference viewing
+    ax.set_xlabel("Marketing Budget (thousands)", fontsize=fs)
+    ax.set_ylabel("Revenue Saved (thousands)", fontsize=fs)
+    ax.set_title("Revenue Saved vs. Retention Budget: Targeted vs. Random Strategy", fontsize=fs + 1)
+    ax.tick_params(axis="both", labelsize=fs - 1)
+    ax.legend(loc="lower right", fontsize=14 if poster_mode else 9)
     ax.grid(True, alpha=0.3)
     fig.tight_layout(pad=0.8)
 

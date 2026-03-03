@@ -1,6 +1,6 @@
 # Customer Lifetime Value (CLV) Prediction and Retention Budget Optimization
 
-A reproducible, business-focused machine learning analytics project that predicts customer churn, estimates CLV, and simulates retention campaigns to optimize marketing spend.
+Predicts customer churn, estimates CLV, and simulates retention campaigns to optimize marketing spend.
 
 ## Business Objective
 
@@ -10,6 +10,16 @@ A reproducible, business-focused machine learning analytics project that predict
 - **Simulate** retention campaigns under fixed budget constraints
 - **Compare** targeted (Expected Loss–ranked) vs random intervention strategies
 - **Quantify** revenue saved, ROI improvement, and targeting efficiency
+
+## Data
+
+This project uses the **Telco customer churn: IBM dataset** (IBM Cognos Analytics base samples):
+
+- **Source:** [Kaggle](https://www.kaggle.com/datasets/yeanzc/telco-customer-churn-ibm-dataset)
+- **Context:** A fictional telco company that provided home phone and Internet services to 7,043 customers in California in Q3
+- **License:** See dataset page for license terms
+
+Place `Telco_customer_churn.xlsx` in the project root (or update `DATA_PATH` in `config.py`).
 
 ## Project Structure
 
@@ -87,5 +97,5 @@ Edit `config.py` to adjust:
 ## Reproducibility
 
 - Fixed random seeds (`RANDOM_STATE = 42`) throughout
-- No hardcoded paths; all paths resolved from `config.py`
-- Modular design with clear separation of concerns
+- Paths in `config.py`; no hardcoded paths
+- Modular structure

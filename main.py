@@ -114,6 +114,7 @@ def main():
     # --- 5. Visualizations ---
     print("\n[5/6] Generating figures...")
     plot_roc_curves(results, save_path=config.FIGURES_DIR / "roc_curves.png")
+    plot_roc_curves(results, save_path=config.FIGURES_DIR / "roc_curves_poster.png", poster_mode=True)
     plot_feature_importance(
         results["rf"]["feature_importance"],
         top_n=15,
@@ -128,6 +129,7 @@ def main():
         poster_mode=True,
     )
     plot_revenue_vs_budget(sweep_df, save_path=config.FIGURES_DIR / "revenue_vs_budget.png")
+    plot_revenue_vs_budget(sweep_df, save_path=config.FIGURES_DIR / "revenue_vs_budget_poster.png", poster_mode=True)
     plot_confusion_matrix(
         results[best_key]["confusion_matrix"],
         best_name,
